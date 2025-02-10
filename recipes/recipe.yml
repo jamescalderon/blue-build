@@ -44,6 +44,12 @@ modules:
       - libglvnd-glx
       - code-insiders
       - webapp-manager
+    replace:
+      - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
+        packages:
+          - mutter
+          - mutter-common
+          - gdm      
     # remove:
     # example: removing firefox (in favor of the flatpak)
     # "firefox" is the main package, "firefox-langpacks" is a dependency
@@ -60,10 +66,10 @@ modules:
     system:
       # If no repo information is specified, Flathub will be used by default
       install:
-        - org.mozilla.firefox
-        # - org.gnome.Loupe
-      # remove:
-      #   - org.gnome.eog
+        - org.mozilla.firefox # web browser
+        - org.gnome.Loupe # image viewer
+      remove:
+        - org.gnome.eog
     # user: {}  # Also add Flathub user repo, but no user packages
 
   - type: script
