@@ -1,22 +1,19 @@
 name: bluebuild
 on:
-  # Schedule a daily build (runs on the default branch, assumed to be main)
   schedule:
-    - cron: "00 02 * * *" # build at 02:00 UTC every day
-  # Only trigger on pushes to the main branch (e.g. after merging a PR)
+    - cron:
+        "00 06 * * *" # build at 06:00 UTC every day
+        # (20 minutes after last ublue images start building)
   push:
-    branches:
-      - main
     paths-ignore: # don't rebuild if only documentation has changed
       - "**.md"
-  # Allow manual triggering; note that if needed you could add a condition to ensure it’s only run on main.
-  workflow_dispatch:
 
+  pull_request:
+  workflow_dispatch: # allow manually triggering builds
 concurrency:
   # only run one build at a time
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
-
 jobs:
   bluebuild:
     name: Build Custom Image
@@ -25,8 +22,6 @@ jobs:
       contents: read
       packages: write
       id-token: write
-    # Optionally, add a job-level condition to make sure the job only runs on main.
-    if: github.ref == 'refs/heads/main'
     strategy:
       fail-fast: false # stop GH from cancelling all matrix builds if one fails
       matrix:
@@ -34,7 +29,7 @@ jobs:
           # !! Add your recipes here
           - recipe.yml
     steps:
-      # The build is fully handled by the reusable GitHub Action.
+      # the build is fully handled by the reusable github action
       - name: Build Custom Image
         uses: blue-build/github-action@v1.8
         with:
@@ -42,5 +37,6 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
-          # Enabled by default; disable if your image is small and you want faster builds.
+
+          # enabled by default, disable if your image is small and you want faster builds
           maximize_build_space: true
