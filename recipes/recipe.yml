@@ -8,7 +8,7 @@ description: This is my personal OS image.
 # the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/bluefin-dx-nvidia
 # image-version: latest # latest is also supported if you want new updates ASAP
-image-version: 40 # latest is also supported if you want new updates ASAP
+image-version: latest # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -16,7 +16,7 @@ modules:
   - type: files
     files:
       - source: system
-        destination: /  # copies files/system/* (everything inside it) into your image's root folder
+        destination: / # copies files/system/* (everything inside it) into your image's root folder
 
   - type: rpm-ostree
     repos:
@@ -52,7 +52,7 @@ modules:
         packages:
           - mutter
           - mutter-common
-          - gdm      
+          - gdm
     # remove:
     # example: removing firefox (in favor of the flatpak)
     # "firefox" is the main package, "firefox-langpacks" is a dependency
@@ -64,8 +64,13 @@ modules:
     install:
       - evdi # DisplayLink driver
 
+  - type: akmods
+    base: main
+    install:
+      - VirtualBox # testing
+
   - type: default-flatpaks
-    notify: true  # Send notification after install/uninstall is finished (true/false)
+    notify: true # Send notification after install/uninstall is finished (true/false)
     system:
       # If no repo information is specified, Flathub will be used by default
       install:
@@ -81,6 +86,6 @@ modules:
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
       # - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"  # example: ld alternatives symlink workaround
     scripts:
-      - nvidia_toolkit.sh  # NVIDIA Tookkit install
+      - nvidia_toolkit.sh # NVIDIA Tookkit install
 
-  - type: signing  # sets up the proper policy & signing files for signed images to work fully
+  - type: signing # sets up the proper policy & signing files for signed images to work fully
