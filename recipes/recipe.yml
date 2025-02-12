@@ -48,7 +48,7 @@ modules:
       - webapp-manager
       - spice-vdagent # needed for the guest agent to work in qemu/kvm
       - wget
-      # - VirtualBox
+      - VirtualBox-7.1
       # - virtualbox-guest-additions
 
     replace:
@@ -91,6 +91,6 @@ modules:
       # - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"  # example: ld alternatives symlink workaround
     scripts:
       - nvidia_toolkit.sh # NVIDIA Tookkit install
-      - virtual_box_install.sh # VirtualBox install
+      # - virtual_box_install.sh # VirtualBox install
 
   - type: signing # sets up the proper policy & signing files for signed images to work fully
