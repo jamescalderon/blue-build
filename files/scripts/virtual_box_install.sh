@@ -7,7 +7,7 @@ FEDORA_VERSION=$(rpm -E %fedora)
 
 # VirtualBox download base URL
 BASE_URL="https://download.virtualbox.org/virtualbox/rpm/fedora"
-RPM_FILE_URL="https://download.virtualbox.org/virtualbox/rpm/fedora/40/x86_64/VirtualBox-7.1-7.1.6_167084_fedora40-1.x86_64.rpm"
+RPM_FILE_URL="https://download.virtualbox.org/virtualbox/rpm/fedora/40/x86_64/VirtualBox-7.0-7.0.18_162988_fedora40-1.x86_64.rpm"
 
 # # Construct the directory URL
 # FEDORA_URL="${BASE_URL}/${FEDORA_VERSION}/x86_64/"
@@ -43,9 +43,9 @@ rpm-ostree install virtualbox.rpm
 # fi
 
 # Install guest additions
-echo "Installing VirtualBox guest additions..."
+# echo "Installing VirtualBox guest additions..."
 
-rpm-ostree install virtualbox-guest-additions
+# rpm-ostree install virtualbox-guest-additions
 
 # rpm-ostree search virtualbox-guest-additions
 
