@@ -82,7 +82,7 @@ modules:
     snippets:
       - "git clone https://gitlab.com/ente76/guillotine.git && sh guillotine/install.sh" # extension for gnome-shell
       - "for drv in qemu interface network nodedev nwfilter secret storage; do systemctl enable virt${drv}d.service virt${drv}d{,-ro,-admin}.socket; done" # enable libvirt services
-      - "sudo sed -i 's/^GRUB_CMDLINE_LINUX=\"rhgb quiet\"/GRUB_CMDLINE_LINUX=\"rhgb quiet intel_iommu=on iommu=pt\"/' /etc/default/grub" # fix GRUB entry to enable IOMMU (QEMU/KVM)
+      - "sed -i 's/^GRUB_CMDLINE_LINUX=\"rhgb quiet\"/GRUB_CMDLINE_LINUX=\"rhgb quiet intel_iommu=on iommu=pt\"/' /etc/default/grub" # fix GRUB entry to enable IOMMU (QEMU/KVM)
       - "grub2-mkconfig -o /boot/grub2/grub.cfg" # update GRUB config
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
 
