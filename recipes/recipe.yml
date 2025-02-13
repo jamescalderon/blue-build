@@ -50,6 +50,7 @@ modules:
       - qemu-guest-agent # needed for the guest agent to work in QEMU/KVM
       - virtio-win # virtio-win drivers (QEMU/KVM)
 
+    
     replace:
       - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
         packages:
@@ -82,8 +83,9 @@ modules:
     snippets:
       - "git clone https://gitlab.com/ente76/guillotine.git && sh guillotine/install.sh" # extension for gnome-shell
       - "for drv in qemu interface network nodedev nwfilter secret storage; do systemctl enable virt${drv}d.service virt${drv}d{,-ro,-admin}.socket; done" # enable libvirt services
-      - "sed -i 's/^GRUB_CMDLINE_LINUX=\"rhgb quiet\"/GRUB_CMDLINE_LINUX=\"rhgb quiet intel_iommu=on iommu=pt\"/' /etc/default/grub" # fix GRUB entry to enable IOMMU (QEMU/KVM)
-      - "grub2-mkconfig -o /boot/grub2/grub.cfg" # update GRUB config
+      # - "sed -i 's/^GRUB_CMDLINE_LINUX=\"rhgb quiet\"/GRUB_CMDLINE_LINUX=\"rhgb quiet intel_iommu=on iommu=pt\"/' /etc/default/grub" # fix GRUB entry to enable IOMMU (QEMU/KVM)
+      # - "grub2-mkconfig -o /boot/grub2/grub.cfg" # update GRUB config
+      - "echo 'options kvm_intel nested=1' >> /etc/modprobe.d/kvm.conf"
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
 
     scripts:
