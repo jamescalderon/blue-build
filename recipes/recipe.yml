@@ -23,6 +23,7 @@ modules:
       - https://negativo17.org/repos/fedora-multimedia.repo
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
       - https://copr.fedorainfracloud.org/coprs/refi64/webapp-manager/repo/fedora-%OS_VERSION%/refi64-webapp-manager-fedora-%OS_VERSION%.repo
+      - https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo # virtio-win drivers (QEMU/KVM)
       # - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
     install:
       - screen
@@ -45,8 +46,9 @@ modules:
       - libglvnd-glx
       - code-insiders
       - webapp-manager
-      - spice-vdagent # needed for the guest agent to work in qemu/kvm
-      - qemu-guest-agent # needed for the guest agent to work in qemu/kvm
+      - spice-vdagent # needed for the guest agent to work in QEMU/KVM
+      - qemu-guest-agent # needed for the guest agent to work in QEMU/KVM
+      - virtio-win # virtio-win drivers (QEMU/KVM)
 
     replace:
       - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
@@ -79,6 +81,7 @@ modules:
   - type: script
     snippets:
       - "git clone https://gitlab.com/ente76/guillotine.git && sh guillotine/install.sh" # extension for gnome-shell
+      - "for drv in qemu interface network nodedev nwfilter secret storage; do systemctl enable virt${drv}d.service virt${drv}d{,-ro,-admin}.socket; done" # enable libvirt services
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
       # - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"  # example: ld alternatives symlink workaround
     scripts:
