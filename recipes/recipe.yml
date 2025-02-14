@@ -51,12 +51,12 @@ modules:
       - virtio-win # virtio-win drivers (QEMU/KVM)
 
     
-    replace:
-      - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
-        packages:
-          - mutter
-          - mutter-common
-          - gdm      
+    # replace:
+    #   - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
+    #     packages:
+    #       - mutter
+    #       - mutter-common
+    #       - gdm      
     # remove:
     # example: removing firefox (in favor of the flatpak)
     # "firefox" is the main package, "firefox-langpacks" is a dependency
