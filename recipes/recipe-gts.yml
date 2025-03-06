@@ -8,11 +8,11 @@ description: This is my personal OS image.
 # the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/bluefin-dx-nvidia
 # image-version: latest # latest is also supported if you want new updates ASAP
-image-version: latest
+image-version: gts
 
-alt-tags:
-  - gts
-  - stable
+# alt-tags:
+#   - gts
+#   - stable
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -66,10 +66,11 @@ modules:
     # - firefox
     # - firefox-langpacks # also remove firefox dependency (special case)
 
-  # - type: akmods
-  #   base: main
-  #   install:
-  #     - evdi # DisplayLink driver
+  - type: akmods
+    base: main
+    install:
+      - evdi # DisplayLink driver
+
   - type: default-flatpaks
     notify: true # Send notification after install/uninstall is finished (true/false)
     system:

@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+# image will be published to ghcr.io/<user>/<name>
+name: blue-build
+# description will be included in the image's metadata
+description: This is my personal OS image.
+
+# the base image to build on top of (FROM) and the version tag to use
+base-image: ghcr.io/ublue-os/bluefin-dx-nvidia
+# image-version: latest # latest is also supported if you want new updates ASAP
+image-version: latest
+
+# alt-tags:
+#   - gts
+#   - stable
+
+# module configuration, executed in order
+# you can include multiple instances of the same module
+modules:
+  - type: files
+    files:
+      - source: system
+        destination: / # copies files/system/* (everything inside it) into your image's root folder
+
+  - type: rpm-ostree
+    repos:
+      - https://negativo17.org/repos/fedora-multimedia.repo
+      - https://packages.microsoft.com/yumrepos/vscode/config.repo
+      - https://copr.fedorainfracloud.org/coprs/refi64/webapp-manager/repo/fedora-%OS_VERSION%/refi64-webapp-manager-fedora-%OS_VERSION%.repo
+      - https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo # virtio-win drivers (QEMU/KVM)
+      # - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
+    install:
+      - screen
+      - stow
+      - chromium
+      - thunderbird
+      - nautilus-open-any-terminal
+      - jetbrains-mono-fonts
+      - python3-pip
+      - gparted
+      - grub-customizer
+      - gnome-terminal-nautilus
+      - meson
+      - freeglut
+      - openal-soft
+      - libcurl
+      - libcurl-devel
+      - switcheroo-control
+      - gtk3
+      - libglvnd-glx
+      - code-insiders
+      - webapp-manager
+      - spice-vdagent # needed for the guest agent to work in QEMU/KVM
+      - qemu-guest-agent # needed for the guest agent to work in QEMU/KVM
+      - virtio-win # virtio-win drivers (QEMU/KVM)
+
+    # replace:
+    #   - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
+    #     packages:
+    #       - mutter
+    #       - mutter-common
+    #       - gdm
+    # remove:
+    # example: removing firefox (in favor of the flatpak)
+    # "firefox" is the main package, "firefox-langpacks" is a dependency
+    # - firefox
+    # - firefox-langpacks # also remove firefox dependency (special case)
+
+  - type: akmods
+    base: main
+    install:
+      - evdi # DisplayLink driver
+
+  - type: default-flatpaks
+    notify: true # Send notification after install/uninstall is finished (true/false)
+    system:
+      # If no repo information is specified, Flathub will be used by default
+      install:
+        - org.mozilla.firefox # web browser
+        - org.gnome.Loupe # image viewer
+      remove:
+        - org.gnome.eog
+    # user: {}  # Also add Flathub user repo, but no user packages
+
+  - type: script
+    snippets:
+      - "git clone https://gitlab.com/ente76/guillotine.git && sh guillotine/install.sh" # extension for gnome-shell
+      - "for drv in qemu interface network nodedev nwfilter secret storage; do systemctl enable virt${drv}d.service virt${drv}d{,-ro,-admin}.socket; done" # enable libvirt services
+      # - "sed -i 's/^GRUB_CMDLINE_LINUX=\"rhgb quiet\"/GRUB_CMDLINE_LINUX=\"rhgb quiet intel_iommu=on iommu=pt\"/' /etc/default/grub" # fix GRUB entry to enable IOMMU (QEMU/KVM)
+      # - "grub2-mkconfig -o /boot/grub2/grub.cfg" # update GRUB config
+      # - "echo 'options kvm_intel nested=1' >> /etc/modprobe.d/kvm.conf"
+      # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
+
+    scripts:
+      - nvidia_toolkit.sh # NVIDIA Tookkit install
+
+  - type: signing # sets up the proper policy & signing files for signed images to work fully
