@@ -8,7 +8,11 @@ description: This is my personal OS image.
 # the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/bluefin-dx-nvidia
 # image-version: latest # latest is also supported if you want new updates ASAP
-image-version: gts
+image-version: latest
+
+alt-tags:
+  - gts
+  - stable
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -16,7 +20,7 @@ modules:
   - type: files
     files:
       - source: system
-        destination: /  # copies files/system/* (everything inside it) into your image's root folder
+        destination: / # copies files/system/* (everything inside it) into your image's root folder
 
   - type: rpm-ostree
     repos:
@@ -50,13 +54,12 @@ modules:
       - qemu-guest-agent # needed for the guest agent to work in QEMU/KVM
       - virtio-win # virtio-win drivers (QEMU/KVM)
 
-    
     # replace:
     #   - from-repo: https://copr.fedorainfracloud.org/coprs/trixieua/mutter-patched/repo/fedora-%OS_VERSION%/trixieua-mutter-patched-fedora-%OS_VERSION%.repo
     #     packages:
     #       - mutter
     #       - mutter-common
-    #       - gdm      
+    #       - gdm
     # remove:
     # example: removing firefox (in favor of the flatpak)
     # "firefox" is the main package, "firefox-langpacks" is a dependency
@@ -67,9 +70,8 @@ modules:
   #   base: main
   #   install:
   #     - evdi # DisplayLink driver
-
   - type: default-flatpaks
-    notify: true  # Send notification after install/uninstall is finished (true/false)
+    notify: true # Send notification after install/uninstall is finished (true/false)
     system:
       # If no repo information is specified, Flathub will be used by default
       install:
@@ -89,6 +91,6 @@ modules:
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
 
     scripts:
-      - nvidia_toolkit.sh  # NVIDIA Tookkit install
+      - nvidia_toolkit.sh # NVIDIA Tookkit install
 
-  - type: signing  # sets up the proper policy & signing files for signed images to work fully
+  - type: signing # sets up the proper policy & signing files for signed images to work fully
