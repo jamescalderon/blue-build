@@ -27,8 +27,8 @@ jobs:
       matrix:
         recipe:
           # !! Add your recipes here
-          # - recipe-latest.yml
-          - recipe-gdx-lts.yml
+          - recipe-latest.yml
+          # - recipe-gdx-lts.yml
           # - recipe-gts.yml
           - recipe-stable.yml
     steps:
