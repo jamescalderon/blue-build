@@ -91,7 +91,7 @@ modules:
       # - "echo 'options kvm_intel nested=1' >> /etc/modprobe.d/kvm.conf"
       # - "curl https://example.com/examplebinary > /usr/bin/examplebinary"  # example: download binary
 
-    scripts:
-      - nvidia_toolkit.sh # NVIDIA Tookkit install
+    # scripts:
+      # - nvidia_toolkit.sh # NVIDIA Tookkit install
 
   - type: signing # sets up the proper policy & signing files for signed images to work fully
