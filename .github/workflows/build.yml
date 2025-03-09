@@ -28,10 +28,11 @@ jobs:
       matrix:
         recipe:
           # !! Add your recipes here
-          - recipe-latest.yml
+          # - recipe-latest.yml
           # - recipe-gdx-lts.yml
           # - recipe-gts.yml
-          - recipe-stable.yml
+          # - recipe-stable.yml
+          - recipe-hwe.yml
     steps:
       # the build is fully handled by the reusable github action
       - name: Build Custom Image
