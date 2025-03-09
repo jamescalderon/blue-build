@@ -66,10 +66,10 @@ modules:
     # - firefox
     # - firefox-langpacks # also remove firefox dependency (special case)
 
-  - type: akmods
-    base: main
-    install:
-      - evdi # DisplayLink driver
+  # - type: akmods
+  #   base: main
+  #   install:
+  #     - evdi # DisplayLink driver
 
   - type: default-flatpaks
     notify: true # Send notification after install/uninstall is finished (true/false)
